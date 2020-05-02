@@ -15,10 +15,10 @@ class UserSeeder extends Seeder
         factory(\App\User::class)->create([
             'email'     => 'test1@example.com',
             'password'  => bcrypt('password')
-        ]);
+        ])->channel()->create(['name'=>'test1']);
         factory(\App\User::class)->create([
             'email'     => 'test2@example.com',
             'password'  => bcrypt('password')
-        ]);
+        ])->channel()->create(['name'=>'test2']);
     }
 }
