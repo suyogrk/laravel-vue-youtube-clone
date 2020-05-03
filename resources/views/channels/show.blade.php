@@ -18,9 +18,14 @@
                            @method('PATCH')
                            <div onclick="document.getElementById('image').click()"  class="form-group row justify-content-center">
                                <div class="channel-avatar">
+                                   {{--
+                                   --}}
+
+
                                    <div class="channel-avatar-overlay">
                                        cam
                                    </div>
+                                   <img src="{{$channel->image()}}" alt="" class="img-fluid">
                                </div>
                            </div>
 
@@ -34,7 +39,7 @@
 
                            <div class="form-group">
                                <label for="description" class="form-control-label">Description</label>
-                               <textarea name="description" id="description" cols="3" rows="3" class="form-control"></textarea>
+                               <textarea name="description" id="description" cols="3" rows="3" class="form-control">{{ $channel->description }}</textarea>
 
                            </div>
 

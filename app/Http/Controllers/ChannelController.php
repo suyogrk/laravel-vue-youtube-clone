@@ -76,6 +76,15 @@ class ChannelController extends Controller
             $channel->addMediaFromRequest('image')
                 ->toMediaCollection('images');
         }
+
+        //dd($request);
+
+        $channel->update([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return redirect()->back();
     }
 
     /**
