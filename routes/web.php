@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource('channels','ChannelController');
+Route::resource('channels/{channel}/subscriptions','SubscriptionController')->only('store','destroy');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

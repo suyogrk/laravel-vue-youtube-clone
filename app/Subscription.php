@@ -8,4 +8,5 @@ class Subscription extends BaseModel
 {
     //
 
+
 }

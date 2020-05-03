@@ -33,14 +33,23 @@
                                </div>
                            </div>
 
-                           <div class="form-group row justify-content-center">
+                           <div class="form-group">
                                <h4 class="text-center">
                                    {{$channel->name}}
+
+                                   <p class="text-center">{{$channel->description}}</p>
+                                   <div class="text-center">
+                                       <subscribe-button :subscriptions='{{ $channel->subscriptions }}' inline-template >
+                                           <button class="btn btn-danger" @click="toggleSubscription">
+                                               Subscribes
+                                           </button>
+                                       </subscribe-button>
+                                   </div>
+
+
                                </h4>
                            </div>
-                            <div class="row justify-content-center">
-                                <p class="text-center">{{$channel->description}}</p>
-                            </div>
+
 
 
 
