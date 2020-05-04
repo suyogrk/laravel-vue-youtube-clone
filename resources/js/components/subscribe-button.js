@@ -7,11 +7,17 @@ Vue.component('subscribe-button',{
             default:()=>[],
 
         },
-      subscriptions:{
+      initialSubscriptions:{
           type: Array,
           required:true,
           default:()=>[]
       }
+    },
+
+    data:function(){
+        return {
+            subscriptions: this.initialSubscriptions,
+        }
     },
     computed:{
         subscribed(){
@@ -42,10 +48,21 @@ methods: {
         }
 
         if(this.subscribed){
-            axios.delete(`/channels/${this.channel.id}/subscriptions/${this.subscription.id}`);
+            axios.delete(`/channels/${this.channel.id}/subscriptions/${this.subscription.id}`)
+                .then(()=>{
+                    this.subscriptions = this.subscriptions.filter(s=>s.id !== this.subscription.id)
+                });
         }else
         {
-           axios.post(`/channels/${this.channel.id}/subscriptions`);
+           axios.post(`/channels/${this.channel.id}/subscriptions`)
+               .then(response=>{
+                   this.subscriptions=[
+                       ...this.subscriptions,
+                       //... is spread operator
+                       //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+                       response.data
+                   ]
+               });
         }
     }
 }

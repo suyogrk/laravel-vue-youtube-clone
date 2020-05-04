@@ -5,7 +5,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{$channel->name}}</div>
+                    <div class="card-header d-flex justify-content-between">
+                        {{$channel->name}}
+
+                        <a href="{{ route('channel.upload',$channel->id) }}">Upload Videos</a>
+                    </div>
 
                     <div class="card-body">
                        @if($channel->editable())
@@ -39,7 +43,7 @@
 
                                    <p class="text-center">{{$channel->description}}</p>
                                    <div class="text-center">
-                                       <subscribe-button :channel="{{$channel}}" :subscriptions='{{ $channel->subscriptions }}' inline-template >
+                                       <subscribe-button :channel="{{$channel}}" :initial-subscriptions='{{ $channel->subscriptions }}' inline-template >
                                            <button class="btn btn-danger" @click="toggleSubscription">
                                                @{{owner?'': subscribed?'Unsubscribe': 'Subscribe'}}
                                                @{{count }}
