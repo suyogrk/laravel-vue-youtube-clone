@@ -3,12 +3,13 @@ Vue.component('channel-uploads',{
         channel:{
             type:Object,
             required:true,
-            default:()=>[]
+            default:()=>([])
         }
     },
     data:()=>({
         selected: false,
         videos: [],
+        progress:{}
     }),
 
     methods:{
@@ -16,17 +17,24 @@ Vue.component('channel-uploads',{
             this.selected =true;
             this.videos = Array.from(this.$refs.videos.files);
 
-            const videos = this.$refs.videos.files;
+            console.log(this.videos);
 
-            console.log(videos);
 
             const uploaders = this.videos.map(video=>{
                 const form = new FormData();
 
+                this.progress[video.name]=0;
+
                 form.append('video' , video);
                 form.append('title',video.name);
 
-                return axios.post(`/channels/${this.channel.id}/videos`.form);
+                return axios.post(`/channels/${this.channel.id}/videos`,form,{
+                    onUploadProgress:(event)=>{
+                        this.progress[video.name] =Math.ceil((event.loaded/event.total) * 100);
+
+                        this.$forceUpdate();
+                    }
+                });
             });
 
 
