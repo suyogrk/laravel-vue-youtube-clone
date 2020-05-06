@@ -111484,6 +111484,13 @@ Vue.component('videojs-player', {
       "default": function _default() {
         return [];
       }
+    },
+    currentvideo: {
+      type: String,
+      required: true,
+      "default": function _default() {
+        return [];
+      }
     }
   },
   data: function data() {
@@ -111491,6 +111498,11 @@ Vue.component('videojs-player', {
       player: null,
       options: []
     };
+  },
+  methods: {
+    playerGetTime: function playerGetTime() {
+      return this.player.currentTime();
+    }
   },
   mounted: function mounted() {
     this.options = {
@@ -111501,8 +111513,27 @@ Vue.component('videojs-player', {
         type: "application/x-mpegURL"
       }]
     };
+    var vsource = this.currentvideo;
     this.player = Object(video_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this.$refs.videoPlayer, this.options, function onPlayerReady() {
-      console.log('onPlayerReady', this);
+      var myPlayer = this;
+      var viewLogged = false;
+
+      if (!viewLogged) {
+        myPlayer.on('timeupdate', function () {
+          var percentagePlayed = Math.ceil(myPlayer.currentTime() / myPlayer.duration() * 100);
+
+          if (percentagePlayed > 15 && !viewLogged) {
+            axios.put('/videos/' + vsource);
+            viewLogged = true;
+          }
+        });
+      }
+    });
+    this.player.on('timeupdate', function () {
+      //var percentagePlayed = Math.ceil(this.player.currentTime() / this.player.duration() * 100);
+      console.log(vsource);
+      /*
+      }*/
     });
   },
   beforeDestroy: function beforeDestroy() {

@@ -84,6 +84,8 @@
     </div>
 <script>
     window.AuthUser ='{!! auth()->user() !!}';
+
+    window.__baseUrl='{{url('/')}}';
     window.__auth = function () {
         try{
             return JSON.parse(AuthUser);
