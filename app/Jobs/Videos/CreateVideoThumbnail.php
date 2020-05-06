@@ -3,15 +3,15 @@
 namespace App\Jobs\Videos;
 
 use App\Video;
-use Pbmedia\LaravelFFMpeg\FFMpegFacade as FFMpeg;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Storage;
+use Pbmedia\LaravelFFMpeg\FFMpegFacade as FFMpeg;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ConvertForStreaming implements ShouldQueue
+class CreateVideoThumbnail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -34,23 +34,17 @@ class ConvertForStreaming implements ShouldQueue
      */
     public function handle()
     {
-        $low = (new X264('aac'))->setKiloBitrate(100);
-        $medium = (new X264('aac'))->setKiloBitrate(250);
-        $high = (new X264('aac'))->setKiloBitrate(500);
-
-
+        //
         FFMpeg::fromDisk('public')
             ->open($this->video->path)
-            ->exportForHLS()
-            ->addFormat($low)
-            ->onProgress(function($percentage){
-                $this->video->update([
-                    'percentage' => $percentage,
-                ]);
-            })
-            ->addFormat($medium)
-            ->addFormat($high)
-            ->save("videos/{$this->video->id}/{$this->video->id}.m3u8");
+            ->getFrameFromSeconds(1)
+            ->export()
+            ->toDisk('public')
+            ->save("/thumbnails/{$this->video->id}.png");
+
+        $this->video->update([
+            'thumbnail' => Storage::url("/thumbnails/{$this->video->id}.png"),
+        ]);
 
     }
 }

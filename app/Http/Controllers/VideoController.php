@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class VideoController extends Controller
 {
+
+    public function updateViews(Video $video){
+        $video->increment('views');
+        return response()->json([]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -47,6 +52,10 @@ class VideoController extends Controller
     public function show(Video $video)
     {
         //
+        if(\request()->wantsJson()){
+            return $video;
+        }
+        return view('video', compact('video'));
     }
 
     /**
