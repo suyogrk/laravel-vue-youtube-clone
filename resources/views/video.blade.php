@@ -6,7 +6,9 @@
             <div class="col-md-8">
                 <div class="card">
                     @if($video->editable())
-                        <form action="">
+                        <form action="{{route('videos.update',$video->id)}}" method="POST">
+                            @csrf
+                            @method('PUT')
 
                     @endif
 
@@ -92,7 +94,17 @@
 
                         </div>
                         <div>
+                            @if($video->editable())
                             <textarea name="description" id="" cols="3" rows="3" class="form-control">{{$video->description}}</textarea>
+                            <div class="text-right mt-4">
+                                <button class="btn btn-info" type="submit">Update Video Details</button>
+
+                            </div>
+                            @else
+                            {{$video->description}}
+                            @endif
+
+
                         </div>
 
                         <hr>

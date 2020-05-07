@@ -79,6 +79,9 @@ class VideoController extends Controller
     public function update(Request $request, Video $video)
     {
         //
+        $video->update(\request()->only(['title','description']));
+
+        return redirect()->back();
     }
 
     /**
