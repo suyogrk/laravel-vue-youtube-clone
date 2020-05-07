@@ -21,7 +21,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-require('./components/subscribe-button');
+Vue.component('subscribe-button', require('./components/subscribe-button.vue').default);
 require('./components/channel-uploads');
 require('./components/videojs-player');
 /**
